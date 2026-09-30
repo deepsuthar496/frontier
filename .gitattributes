@@ -1,0 +1,4 @@
+# GitHub blocks files >100MB; weights go through Git LFS.
+*.safetensors filter=lfs diff=lfs merge=lfs -text
+*.onnx filter=lfs diff=lfs merge=lfs -text
+*.bin filter=lfs diff=lfs merge=lfs -text

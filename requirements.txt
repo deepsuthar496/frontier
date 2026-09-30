@@ -1,0 +1,9 @@
+torch>=2.4
+transformers>=4.44
+safetensors
+numpy
+scikit-learn
+datasets
+onnx
+onnxruntime
+laya

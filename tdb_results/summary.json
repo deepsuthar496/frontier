@@ -1,0 +1,96 @@
+{
+ "laya": {
+  "n": 5387,
+  "answered": 5028,
+  "skipped": 359,
+  "decisionScore": 62.78,
+  "accuracy_primary": 0.5195,
+  "ece_maxp_10bin": 0.1917,
+  "by_suite": {
+   "data-and-operations": 58.62,
+   "real-time-and-agents": 71.96,
+   "retrieval-and-knowledge": 49.85,
+   "safety-and-quality": 70.68,
+   "workflow-control": 62.86
+  }
+ },
+ "frontier": {
+  "n": 5387,
+  "answered": 5028,
+  "skipped": 359,
+  "decisionScore": 61.95,
+  "accuracy_primary": 0.4187,
+  "ece_maxp_10bin": 0.1096,
+  "by_suite": {
+   "data-and-operations": 64.69,
+   "real-time-and-agents": 65.18,
+   "retrieval-and-knowledge": 49.48,
+   "safety-and-quality": 67.94,
+   "workflow-control": 64.56
+  }
+ },
+ "laya@half": {
+  "n": 2696,
+  "answered": 2516,
+  "skipped": 180,
+  "decisionScore": 62.9,
+  "accuracy_primary": 0.5119,
+  "ece_maxp_10bin": 0.1979,
+  "by_suite": {
+   "data-and-operations": 59.81,
+   "real-time-and-agents": 71.0,
+   "retrieval-and-knowledge": 49.86,
+   "safety-and-quality": 70.58,
+   "workflow-control": 63.75
+  },
+  "subset_fraction": 0.5
+ },
+ "frontier@half": {
+  "n": 2696,
+  "answered": 2516,
+  "skipped": 180,
+  "decisionScore": 61.83,
+  "accuracy_primary": 0.4157,
+  "ece_maxp_10bin": 0.1168,
+  "by_suite": {
+   "data-and-operations": 64.29,
+   "real-time-and-agents": 65.24,
+   "retrieval-and-knowledge": 49.49,
+   "safety-and-quality": 67.73,
+   "workflow-control": 64.41
+  },
+  "subset_fraction": 0.5
+ },
+ "frontier_v4@half": {
+  "n": 2696,
+  "answered": 2516,
+  "skipped": 180,
+  "decisionScore": 61.17,
+  "accuracy_primary": 0.4221,
+  "ece_maxp_10bin": 0.1624,
+  "by_suite": {
+   "data-and-operations": 63.54,
+   "real-time-and-agents": 68.12,
+   "retrieval-and-knowledge": 45.04,
+   "safety-and-quality": 65.01,
+   "workflow-control": 67.48
+  },
+  "subset_fraction": 0.5
+ },
+ "frontier_v5@half": {
+  "n": 2696,
+  "answered": 2516,
+  "skipped": 180,
+  "decisionScore": 60.99,
+  "accuracy_primary": 0.4181,
+  "ece_maxp_10bin": 0.1435,
+  "by_suite": {
+   "data-and-operations": 63.48,
+   "real-time-and-agents": 63.35,
+   "retrieval-and-knowledge": 48.55,
+   "safety-and-quality": 66.35,
+   "workflow-control": 66.07
+  },
+  "subset_fraction": 0.5
+ }
+}

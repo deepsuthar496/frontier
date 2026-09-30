@@ -1,0 +1,12 @@
+# Champion: frontier_ckpt_v3 (Frontier-168M). Everything else is experiment history.
+frontier_ckpt/
+frontier_ckpt_final/
+frontier_ckpt_v2/
+frontier_ckpt_v4/
+frontier_ckpt_v5/
+__pycache__/
+*.pyc
+*.log
+bench_run*.log
+bench_v3.log
+.local/
