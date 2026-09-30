@@ -4,6 +4,7 @@ frontier_ckpt_final/
 frontier_ckpt_v2/
 frontier_ckpt_v4/
 frontier_ckpt_v5/
+frontier_ckpt_t4/
 __pycache__/
 *.pyc
 *.log
