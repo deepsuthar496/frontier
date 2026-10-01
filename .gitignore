@@ -16,3 +16,4 @@ __pycache__/
 bench_run*.log
 bench_v3.log
 .local/
+frontier_ckpt_v8*
