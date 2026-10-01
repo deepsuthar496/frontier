@@ -55,7 +55,8 @@ class FrontierAgent:
                     budget_tokens=ev_cfg.get("budget_tokens", self.cfg["max_len"]),
                     chunk_tokens=ev_cfg.get("chunk_tokens", 200),
                     overlap=ev_cfg.get("overlap", 50),
-                    top_k=ev_cfg.get("top_k", 4))
+                    top_k=ev_cfg.get("top_k", 4),
+                    strategy=ev_cfg.get("strategy", "v2"))
                 self._last_evidence = getattr(self, "_last_evidence", {})
                 self._last_evidence[qid] = info
             seq, markers = build_sequence(self.tok, st, q,

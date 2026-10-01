@@ -62,9 +62,15 @@ def score_chunks(agent, chunks, qdef):
 
 
 def select_evidence(agent, state, qdef, budget_tokens=None, chunk_tokens=200,
-                    overlap=50, top_k=4):
-    """Return (selected_state, info). Identity when state fits budget."""
+                    overlap=50, top_k=4, strategy="v2"):
+    """Return (selected_state, info). Identity when state fits budget.
+
+    strategy v1: top-k by confidence (fails on authored distractors).
+    strategy v2: first + last chunks (definitions/conditions) + highest-entropy
+    middles (contested passages, not confident traps). Preserves doc order.
+    """
     import json as _json
+    import math as _math
     s = state if isinstance(state, str) else _json.dumps(state, ensure_ascii=False)
     budget = budget_tokens or agent.cfg["max_len"]
     s_ids = agent.tok(s, add_special_tokens=False)["input_ids"]
@@ -72,7 +78,17 @@ def select_evidence(agent, state, qdef, budget_tokens=None, chunk_tokens=200,
         return state, {"selected": False, "kept_ratio": 1.0, "n_chunks": 1}
     chunks, spans = chunk_state(agent.tok, s, chunk_tokens, overlap)
     confs = score_chunks(agent, chunks, qdef)
-    order = sorted(range(len(chunks)), key=lambda i: -confs[i])[:top_k]
+    n = len(chunks)
+    if strategy == "v1" or n <= top_k:
+        order = sorted(range(n), key=lambda i: -confs[i])[:top_k]
+    else:
+        ents = []
+        for c in confs:
+            c = min(max(c, 1e-9), 1 - 1e-9)
+            ents.append(-(c * _math.log(c) + (1 - c) * _math.log(1 - c)))
+        mid = [i for i in range(1, n - 1)]
+        mid = sorted(mid, key=lambda i: -ents[i])[:max(0, top_k - 2)]
+        order = sorted(set([0, n - 1] + mid))
     order = sorted(order)  # preserve document order
     selected = "\n[...]\n".join(chunks[i] for i in order)
     kept = sum(spans[i][1] - spans[i][0] for i in order)
