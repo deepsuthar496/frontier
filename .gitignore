@@ -4,8 +4,12 @@ frontier_ckpt_final/
 frontier_ckpt_v2/
 frontier_ckpt_v4/
 frontier_ckpt_v5/
+frontier_ckpt_v6/
+frontier_ckpt_v7/
 frontier_ckpt_t4/
 frontier_ckpt_t4_distil/
+teacher_labels.npz
+*.npz
 __pycache__/
 *.pyc
 *.log

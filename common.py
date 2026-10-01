@@ -94,11 +94,10 @@ def total_loss(student_logits, teacher_logits, target, mask, qtype,
     # CE against hard/soft target (masked)
     logp = torch.log_softmax(student_logits, -1)
     ce = -(target * logp * mask_f).sum(-1) / mask_f.sum(-1).clamp_min(1)
-    # KL distill
-    tp = torch.softmax(teacher_logits / tau, -1)
-    kl = F.kl_div(torch.log_softmax(student_logits / tau, -1), tp,
-                  reduction="none").sum(-1) * (tau ** 2)
-    kl = (kl * mask.any(-1).float())
+    # KL distill (per-option masked: pads carry no teacher mass and must not NaN)
+    tp = torch.softmax(teacher_logits / tau, -1).clamp_min(1e-12)
+    kl_elem = F.kl_div(torch.log_softmax(student_logits / tau, -1), tp, reduction="none")
+    kl = (kl_elem * mask_f).sum(-1) * (tau ** 2)
     # Brier (multi-class, guide.md)
     p = torch.softmax(student_logits, -1) * mask_f
     brier = (((p - target * mask_f) ** 2) * mask_f).sum(-1) / mask_f.sum(-1).clamp_min(1)
