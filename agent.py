@@ -44,9 +44,21 @@ class FrontierAgent:
         from common import render_options
         ids = list(questions.keys())
         items = []
+        ev_cfg = self.cfg.get("evidence") or {}
         for qid in ids:
             q = self._to_internal(questions[qid])
-            seq, markers = build_sequence(self.tok, state, q,
+            st = state
+            if ev_cfg.get("enable", False):
+                from evidence import select_evidence
+                st, info = select_evidence(
+                    self, state, questions[qid],
+                    budget_tokens=ev_cfg.get("budget_tokens", self.cfg["max_len"]),
+                    chunk_tokens=ev_cfg.get("chunk_tokens", 200),
+                    overlap=ev_cfg.get("overlap", 50),
+                    top_k=ev_cfg.get("top_k", 4))
+                self._last_evidence = getattr(self, "_last_evidence", {})
+                self._last_evidence[qid] = info
+            seq, markers = build_sequence(self.tok, st, q,
                                           self.cfg["max_len"], self.cfg["head_max_len"])
             if len(markers) != len(render_options(q)):
                 raise ValueError(f"question {qid!r}: options do not fit in head_max_len")
