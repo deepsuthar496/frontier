@@ -17,3 +17,4 @@ bench_run*.log
 bench_v3.log
 .local/
 frontier_ckpt_v8*
+frontier_ckpt_v8_1024/
