@@ -100,7 +100,8 @@ def main():
                     help="HF encoder id for fresh init (no local ckpt); warm-starts from Laya")
     a = ap.parse_args()
     assert not a.profile100, "profile100 is single-GPU only; profile the base script"
-    dist.init_process_group("nccl")
+    from datetime import timedelta as _td
+    dist.init_process_group("nccl", timeout=_td(minutes=30))  # rank0 eval is long; outlast it
     RANK, WORLD = dist.get_rank(), dist.get_world_size()
     torch.cuda.set_device(RANK)
     device = torch.device(f"cuda:{RANK}")
@@ -246,8 +247,17 @@ def main():
                     return
             acc_tokens += int(bd["attention_mask"].sum())
         dist.barrier()
+        # sharded eval: both ranks work (no 10-min one-sided barrier wait), rank0 aggregates
+        shard = [e for j, (e, _, _, _) in enumerate(va) if j % WORLD == RANK]
+        ms = evaluate(model, shard, tok, device, a.max_len, 192)
+        got = [None for _ in range(WORLD)]
+        dist.all_gather_object(got, {"n": len(shard), "acc": ms["acc"], "brier": ms["brier"],
+                                     "ece": ms.get("ece"), "score_mae": ms.get("score_mae", 0.0)})
         if is_main:
-            m = evaluate(model, [e for e, _, _, _ in va], tok, device, a.max_len, 192)
+            ntot = sum(g["n"] for g in got)
+            m = {"acc": sum(g["acc"] * g["n"] for g in got) / ntot,
+                 "brier": sum(g["brier"] * g["n"] for g in got) / ntot,
+                 "ece": got[0]["ece"], "score_mae": got[0]["score_mae"]}
             print(f"ep {ep+1} loss {tot/max(1,nb):.4f} dev acc {m['acc']:.3f} brier {m['brier']:.4f}", flush=True)
             epdir = f"{a.out}_ep{ep+1}"
             os.makedirs(f"{epdir}/encoder", exist_ok=True)
