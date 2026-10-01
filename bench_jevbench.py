@@ -57,7 +57,8 @@ def run(tag, items=None):
     else:
         from agent import FrontierAgent
         d = {"frontier": "frontier_ckpt_v3", "frontier_v6": "frontier_ckpt_v6",
-             "frontier_v7": "frontier_ckpt_v7"}[tag]
+             "frontier_v7": "frontier_ckpt_v7",
+             "frontier_v8": "frontier_ckpt_v8"}[tag]
         agent = FrontierAgent(f"/teamspace/studios/this_studio/frontier/{d}")
         predict = agent.system_one
     acc, scores, by = 0, [], {}
