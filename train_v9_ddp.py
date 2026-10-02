@@ -2,7 +2,7 @@
 
 Loss (supervised baseline + selective KD):
   L = CE(gold) + 0.1*Brier(gold) + 0.1*RPS(ordinal,gold) + alpha*tau^2*KL(teacher||student)
-  alpha = 0.2 iff teacher argmax == gold and teacher present, else 0.
+  alpha from KD_POLICY (agree 0.5 / disagree 0.1 / missing 0.0); see common.KD_POLICY.
   Invalid option slots masked before every softmax. RPS only for score.
   Options NEVER shuffled (order locked to teacher/gold).
 
@@ -27,7 +27,7 @@ sys.path.insert(0, "/teamspace/studios/this_studio/laya")
 from transformers import AutoTokenizer, AutoModel
 from safetensors.torch import load_file, save_file
 from model import FrontierDecisionEngine, count_params
-from common import QTYPES, collate
+from common import QTYPES, collate, KD_POLICY
 from train import encode as encode_rec, evaluate
 
 
@@ -142,12 +142,24 @@ def main():
         _tz = np.load(a.teacher_npz, allow_pickle=True)
         _TL, _AL = _tz["logits"].astype(np.float32), _tz["alphas"].astype(np.float32)
         assert len(_TL) == len(parts["train"]), (len(_TL), len(parts["train"]))
+        from common import content_id as _cid, option_hash as _oph
+        from common import KD_POLICY as _KDP
+        _meta = json.loads(str(_tz["meta"]))
+        assert _meta.get("kd_policy") == _KDP, f"teacher KD policy {_meta.get('kd_policy')} != {_KDP}"
+        _ids = [str(x) for x in _tz["ids"]]
+        _ophs = [str(x) for x in _tz["option_hash"]]
+        _ks = [int(x) for x in _tz["num_options"]]
         for i, it in enumerate(parts["train"]):
-            k = len(it["q"]["crit"]) if it["q"]["t"] != "noul" else 2
+            q = {"t": it["q"]["t"], "ins": it["q"]["ins"], "crit": it["q"]["crit"]}
+            assert _cid(it["state"], q, it["gold"]) == _ids[i], f"teacher row {i} id mismatch"
+            assert _oph(q) == _ophs[i], f"teacher row {i} option mismatch"
+            k = len(q["crit"]) if q["t"] != "noul" else 2
+            assert _ks[i] == k, f"teacher row {i} k mismatch"
             it["teacher"] = [float(x) for x in _TL[i, :k]]
             it["alpha"] = float(_AL[i])
-        nag = int((_AL == 0.5).sum())
-        print(f"teacher merged: agree0.5={nag} disagree0.1={int((_AL==0.1).sum())}", flush=True)
+        nag = int((_AL == _KDP["agree"]).sum())
+        print(f"teacher merged+validated: agree{_KDP['agree']}={nag} "
+              f"disagree{_KDP['disagree']}={int((_AL==_KDP['disagree']).sum())}", flush=True)
     print({k: len(v) for k, v in parts.items()}, flush=True)
     print(f"final held out: {len(parts['final'])} items (untouched)", flush=True)
     rng = random.Random(8)
@@ -216,6 +228,7 @@ def main():
         model.train()
         tot = 0
         nb = 0
+        _comp = {}
         mbs = my_mbs(microbatches_for(ep))
         opt.zero_grad()
         for ui, mb in enumerate(mbs):
@@ -247,6 +260,8 @@ def main():
             with (nullcontext() if sync else model.no_sync()):
                 scaler.scale(loss).backward()
             tot += loss.item()
+            for _k, _v in _parts.items():
+                _comp[_k] = _comp.get(_k, 0.0) + _v
             if sync:
                 scaler.unscale_(opt)
                 torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -272,7 +287,8 @@ def main():
             m = {"acc": sum(g["acc"] * g["n"] for g in got) / ntot,
                  "brier": sum(g["brier"] * g["n"] for g in got) / ntot,
                  "ece": got[0]["ece"], "score_mae": got[0]["score_mae"]}
-            print(f"ep {ep+1} loss {tot/max(1,nb):.4f} dev acc {m['acc']:.3f} brier {m['brier']:.4f}", flush=True)
+            _PCI = {k: round(v / max(1, len(mine)), 4) for k, v in _comp.items()}
+            print(f"ep {ep+1} loss {tot/max(1,nb):.4f} dev acc {m['acc']:.3f} brier {m['brier']:.4f} parts={_PCI}", flush=True)
             epdir = f"{a.out}_ep{ep+1}"
             os.makedirs(f"{epdir}/encoder", exist_ok=True)
             os.makedirs(f"{epdir}/tokenizer", exist_ok=True)
@@ -320,7 +336,8 @@ def main():
         json.dump({"encoder": "answerdotai/ModernBERT-large", "head_layers": 2, "max_len": a.max_len,
                    "head_max_len": 192, "temperature": temps, "temperature_by_options": temps_by,
                    "params_M": round(count_params(model) / 1e6, 1), "teacher": "selective-KD agree-only",
-                   "tau": a.tau, "init": a.src, "world": WORLD},
+                   "tau": a.tau, "init": a.src, "world": WORLD,
+                   "kd_policy": KD_POLICY},
                   open(f"{a.out}/frontier_config.json", "w"), indent=1)
         print("saved", a.out, f"final split still untouched: {len(parts['final'])}", flush=True)
     dist.barrier()

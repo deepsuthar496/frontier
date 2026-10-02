@@ -7,6 +7,7 @@ data_v9.npz train order. Single GPU, offline; student trains later.
 import json, sys
 import numpy as np
 import torch
+from common import content_id, option_hash, kd_alpha, KD_POLICY
 
 KMAX = 8
 
@@ -24,11 +25,16 @@ def main(path="data_v9.npz", out="teacher_v9.npz"):
     tok, model = agent.tok, agent.model.to(device).eval()
     TL = np.full((len(tr), KMAX), -1e4, dtype=np.float32)
     AL = np.zeros(len(tr), dtype=np.float32)
+    IDS, OPH, KK = [], [], []
     for i, r in enumerate(tr):
+        q = {"t": r["q"]["t"], "ins": r["q"]["ins"], "crit": r["q"]["crit"]}
+        IDS.append(content_id(r["state"], q, r["gold"]))
+        OPH.append(option_hash(q))
+        KK.append(len(q["crit"]) if q["t"] != "noul" else 2)
         if r.get("teacher") is not None:
             t = np.array(r["teacher"], dtype=np.float32)
             TL[i, :len(t)] = t
-            AL[i] = 0.5  # replay items are agree-by-construction
+            AL[i] = kd_alpha(True)  # replay items are agree-by-construction
     B = 32
     with torch.no_grad():
         for s in range(0, len(need), B):
@@ -60,10 +66,23 @@ def main(path="data_v9.npz", out="teacher_v9.npz"):
             for (i, x), row in zip(enc, lg):
                 k = len(x["markers"])
                 TL[i, :k] = row[:k]
-                AL[i] = 0.5 if int(np.argmax(row[:k])) == int(tr[i]["gold"]) else 0.1
+                agrees = int(np.argmax(row[:k])) == int(tr[i]["gold"])
+                AL[i] = kd_alpha(agrees)
+                q = {"t": tr[i]["q"]["t"], "ins": tr[i]["q"]["ins"], "crit": tr[i]["q"]["crit"]}
+                IDS[i] = content_id(tr[i]["state"], q, tr[i]["gold"])
+                OPH[i] = option_hash(q)
+                KK[i] = k
             if (s // B + 1) % 20 == 0:
-                print(f"  {s+len(sel)}/{len(need)} agree={(AL[:len(tr)]==0.5).sum()}", flush=True)
-    np.savez_compressed(out, logits=TL, alphas=AL)
+                print(f"  {s+len(sel)}/{len(need)} agree={(AL[:len(tr)]==KD_POLICY['agree']).sum()}", flush=True)
+    import time as _t
+    meta = {"kd_policy": KD_POLICY, "teacher": "convaiinnovations/laya",
+            "teacher_max_len": 512, "teacher_head_len": 192,
+            "created_utc": _t.strftime("%Y-%m-%dT%H:%M:%SZ", _t.gmtime())}
+    np.savez_compressed(out, logits=TL, alphas=AL,
+                        ids=np.array(IDS, dtype=object),
+                        option_hash=np.array(OPH, dtype=object),
+                        num_options=np.array(KK, dtype=np.int32),
+                        meta=np.array(json.dumps(meta), dtype=object))
     print(f"saved {out} agree={(AL==0.5).sum()} disagree={(AL==0.1).sum()} none={(AL==0).sum()}", flush=True)
 
 

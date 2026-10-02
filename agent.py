@@ -83,9 +83,12 @@ class FrontierAgent:
                 temp_bucket(qt, k), self.temperature[qt])
             p = np.exp(z - z.max()); p = p / p.sum()
             ext = {"act_probability": float(act[r, 0])}
+            from common import canonical_options, decode_pred  # E0 shared decoder
             if q["t"] == "choice":
                 keys = list(q["crit"].keys())
-                answers[qid] = {"type": "choice", "choice": keys[int(p.argmax())],
+                assert keys == canonical_options(q), "model order drifted from canonical"
+                answers[qid] = {"type": "choice",
+                                "choice": decode_pred(int(p.argmax()), q),
                                 "probabilities": {kk: round(float(v), 4) for kk, v in zip(keys, p)},
                                 "confidence": round(confidence_from_probs(p, k), 4),
                                 "frontier": ext}

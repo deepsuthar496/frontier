@@ -138,3 +138,75 @@ def confidence_from_probs(p, k):
 def temp_bucket(qtype: int, k: int) -> str:
     size = "2" if k <= 2 else "3-5" if k <= 5 else "6-10" if k <= 10 else "11+"
     return f"{QTYPE_NAMES[int(qtype)]}:{size}"
+
+
+# ---------------- canonical option mapping (E0: one coordinate system) ----------------
+# Canonical space: choice -> criteria-key order; score -> ["0"..]; noul -> ["false","true"].
+# Model space: marker order after option_order (we always train/eval with identity
+# order, so canonical == model; the mapping is explicit so any future shuffle
+# cannot silently misalign gold labels, teacher rows, or predictions).
+import hashlib as _hl
+
+
+def canonical_options(q) -> list:
+    t = q["t"]
+    if t == "choice":
+        return list(q["crit"].keys())
+    if t == "score":
+        return [str(i) for i in range(len(q["crit"]))]
+    return ["false", "true"]
+
+
+def canonical_gold_idx(q, gold) -> int:
+    t = q["t"]
+    if t == "noul":
+        return 1 if str(gold).lower() in ("yes", "true", "1") else 0
+    if t == "score":
+        return int(gold)
+    return canonical_options(q).index(str(gold))
+
+
+def model_order(q, option_order=None) -> list:
+    n = len(canonical_options(q))
+    return list(option_order) if option_order is not None else list(range(n))
+
+
+def gold_model_idx(q, gold, option_order=None) -> int:
+    ci = canonical_gold_idx(q, gold)
+    return list(model_order(q, option_order)).index(ci)
+
+
+def decode_pred(model_idx: int, q, option_order=None):
+    """Model argmax -> canonical answer VALUE (key string / level int / bool int)."""
+    order = model_order(q, option_order)
+    ci = order[int(model_idx)]
+    t = q["t"]
+    if t == "choice":
+        return canonical_options(q)[ci]
+    if t == "score":
+        return int(canonical_options(q)[ci])
+    return ci  # noul: 0/1
+
+
+def content_id(state, q, gold) -> str:
+    h = _hl.sha1()
+    h.update(serialize_state(state).encode("utf-8", "ignore"))
+    h.update(str(q["t"]).encode())
+    h.update(str(q.get("ins")).encode())
+    h.update(json.dumps(canonical_options(q), ensure_ascii=False).encode())
+    h.update(str(gold).encode())
+    return h.hexdigest()[:16]
+
+
+def option_hash(q) -> str:
+    return _hl.sha1(json.dumps(canonical_options(q), ensure_ascii=False).encode()).hexdigest()[:16]
+
+
+# ---------------- KD policy: single source of truth (E0: no drift) ----------------
+KD_POLICY = {"agree": 0.5, "disagree": 0.1, "missing": 0.0, "tau": 2.0}
+
+
+def kd_alpha(teacher_agrees: bool | None) -> float:
+    if teacher_agrees is None:
+        return KD_POLICY["missing"]
+    return KD_POLICY["agree"] if teacher_agrees else KD_POLICY["disagree"]
