@@ -1,0 +1,1312 @@
+[
+ {
+  "id": "seal-hop-page-0",
+  "family": "multihop",
+  "state": "Hospital alert is code_blue. Protocol: code_blue pages surgery lead. Roster: surgery lead is Okafor; night cover is Lindqvist. Who must be paged?",
+  "question": {
+   "type": "choice",
+   "instructions": "Who must be paged under protocol and roster?",
+   "criteria": {
+    "reyes": "Page Reyes.",
+    "okafor": "Page Okafor.",
+    "lindqvist": "Page Lindqvist."
+   }
+  },
+  "labels": [
+   "reyes",
+   "okafor",
+   "lindqvist"
+  ],
+  "expected": "okafor",
+  "group": "seal-multihop",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-hop-page-1",
+  "family": "multihop",
+  "state": "Hospital alert is code_yellow. Protocol: code_yellow pages triage lead. Roster: triage lead is Reyes; night cover is Lindqvist. Who must be paged?",
+  "question": {
+   "type": "choice",
+   "instructions": "Who must be paged under protocol and roster?",
+   "criteria": {
+    "reyes": "Page Reyes.",
+    "okafor": "Page Okafor.",
+    "lindqvist": "Page Lindqvist."
+   }
+  },
+  "labels": [
+   "reyes",
+   "okafor",
+   "lindqvist"
+  ],
+  "expected": "reyes",
+  "group": "seal-multihop",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-hop-page-2",
+  "family": "multihop",
+  "state": "Hospital alert is code_blue. Protocol: code_blue pages surgery lead. Roster: surgery lead is Okafor; night cover is Lindqvist. Who must be paged?",
+  "question": {
+   "type": "choice",
+   "instructions": "Who must be paged under protocol and roster?",
+   "criteria": {
+    "reyes": "Page Reyes.",
+    "okafor": "Page Okafor.",
+    "lindqvist": "Page Lindqvist."
+   }
+  },
+  "labels": [
+   "reyes",
+   "okafor",
+   "lindqvist"
+  ],
+  "expected": "okafor",
+  "group": "seal-multihop",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-hop-page-3",
+  "family": "multihop",
+  "state": "Hospital alert is code_yellow. Protocol: code_yellow pages triage lead. Roster: triage lead is Reyes; night cover is Okafor. Who must be paged?",
+  "question": {
+   "type": "choice",
+   "instructions": "Who must be paged under protocol and roster?",
+   "criteria": {
+    "reyes": "Page Reyes.",
+    "okafor": "Page Okafor.",
+    "lindqvist": "Page Lindqvist."
+   }
+  },
+  "labels": [
+   "reyes",
+   "okafor",
+   "lindqvist"
+  ],
+  "expected": "reyes",
+  "group": "seal-multihop",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-hop-page-4",
+  "family": "multihop",
+  "state": "Hospital alert is code_yellow. Protocol: code_yellow pages triage lead. Roster: triage lead is Reyes; night cover is Reyes. Who must be paged?",
+  "question": {
+   "type": "choice",
+   "instructions": "Who must be paged under protocol and roster?",
+   "criteria": {
+    "reyes": "Page Reyes.",
+    "okafor": "Page Okafor.",
+    "lindqvist": "Page Lindqvist."
+   }
+  },
+  "labels": [
+   "reyes",
+   "okafor",
+   "lindqvist"
+  ],
+  "expected": "reyes",
+  "group": "seal-multihop",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-hop-page-5",
+  "family": "multihop",
+  "state": "Hospital alert is code_yellow. Protocol: code_yellow pages triage lead. Roster: triage lead is Reyes; night cover is Lindqvist. Who must be paged?",
+  "question": {
+   "type": "choice",
+   "instructions": "Who must be paged under protocol and roster?",
+   "criteria": {
+    "reyes": "Page Reyes.",
+    "okafor": "Page Okafor.",
+    "lindqvist": "Page Lindqvist."
+   }
+  },
+  "labels": [
+   "reyes",
+   "okafor",
+   "lindqvist"
+  ],
+  "expected": "reyes",
+  "group": "seal-multihop",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-hop-page-6",
+  "family": "multihop",
+  "state": "Hospital alert is code_yellow. Protocol: code_yellow pages triage lead. Roster: triage lead is Reyes; night cover is Okafor. Who must be paged?",
+  "question": {
+   "type": "choice",
+   "instructions": "Who must be paged under protocol and roster?",
+   "criteria": {
+    "reyes": "Page Reyes.",
+    "okafor": "Page Okafor.",
+    "lindqvist": "Page Lindqvist."
+   }
+  },
+  "labels": [
+   "reyes",
+   "okafor",
+   "lindqvist"
+  ],
+  "expected": "reyes",
+  "group": "seal-multihop",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-hop-page-7",
+  "family": "multihop",
+  "state": "Hospital alert is code_blue. Protocol: code_blue pages surgery lead. Roster: surgery lead is Okafor; night cover is Lindqvist. Who must be paged?",
+  "question": {
+   "type": "choice",
+   "instructions": "Who must be paged under protocol and roster?",
+   "criteria": {
+    "reyes": "Page Reyes.",
+    "okafor": "Page Okafor.",
+    "lindqvist": "Page Lindqvist."
+   }
+  },
+  "labels": [
+   "reyes",
+   "okafor",
+   "lindqvist"
+  ],
+  "expected": "okafor",
+  "group": "seal-multihop",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-hop-page-8",
+  "family": "multihop",
+  "state": "Hospital alert is code_blue. Protocol: code_blue pages surgery lead. Roster: surgery lead is Okafor; night cover is Reyes. Who must be paged?",
+  "question": {
+   "type": "choice",
+   "instructions": "Who must be paged under protocol and roster?",
+   "criteria": {
+    "reyes": "Page Reyes.",
+    "okafor": "Page Okafor.",
+    "lindqvist": "Page Lindqvist."
+   }
+  },
+  "labels": [
+   "reyes",
+   "okafor",
+   "lindqvist"
+  ],
+  "expected": "okafor",
+  "group": "seal-multihop",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-hop-page-9",
+  "family": "multihop",
+  "state": "Hospital alert is code_blue. Protocol: code_blue pages surgery lead. Roster: surgery lead is Okafor; night cover is Reyes. Who must be paged?",
+  "question": {
+   "type": "choice",
+   "instructions": "Who must be paged under protocol and roster?",
+   "criteria": {
+    "reyes": "Page Reyes.",
+    "okafor": "Page Okafor.",
+    "lindqvist": "Page Lindqvist."
+   }
+  },
+  "labels": [
+   "reyes",
+   "okafor",
+   "lindqvist"
+  ],
+  "expected": "okafor",
+  "group": "seal-multihop",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-hop-wh-0",
+  "family": "multihop",
+  "state": "Warehouse ticket: goods class fragile, stored in zone A. Rulebook: flammable goods in zone A go to the hazmat crew, in zone B to the shift lead; fragile goods always go to the handler; standard goods need no page. Which route?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which route under the rulebook?",
+   "criteria": {
+    "hazmat": "Page hazmat crew.",
+    "shift_lead": "Page shift lead.",
+    "handler": "Page handler.",
+    "no_page": "No page, ticket only."
+   }
+  },
+  "labels": [
+   "hazmat",
+   "shift_lead",
+   "handler",
+   "no_page"
+  ],
+  "expected": "handler",
+  "group": "seal-multihop",
+  "gold_idx": 2
+ },
+ {
+  "id": "seal-hop-wh-1",
+  "family": "multihop",
+  "state": "Warehouse ticket: goods class standard, stored in zone A. Rulebook: flammable goods in zone A go to the hazmat crew, in zone B to the shift lead; fragile goods always go to the handler; standard goods need no page. Which route?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which route under the rulebook?",
+   "criteria": {
+    "hazmat": "Page hazmat crew.",
+    "shift_lead": "Page shift lead.",
+    "handler": "Page handler.",
+    "no_page": "No page, ticket only."
+   }
+  },
+  "labels": [
+   "hazmat",
+   "shift_lead",
+   "handler",
+   "no_page"
+  ],
+  "expected": "no_page",
+  "group": "seal-multihop",
+  "gold_idx": 3
+ },
+ {
+  "id": "seal-hop-wh-2",
+  "family": "multihop",
+  "state": "Warehouse ticket: goods class flammable, stored in zone B. Rulebook: flammable goods in zone A go to the hazmat crew, in zone B to the shift lead; fragile goods always go to the handler; standard goods need no page. Which route?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which route under the rulebook?",
+   "criteria": {
+    "hazmat": "Page hazmat crew.",
+    "shift_lead": "Page shift lead.",
+    "handler": "Page handler.",
+    "no_page": "No page, ticket only."
+   }
+  },
+  "labels": [
+   "hazmat",
+   "shift_lead",
+   "handler",
+   "no_page"
+  ],
+  "expected": "shift_lead",
+  "group": "seal-multihop",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-hop-wh-3",
+  "family": "multihop",
+  "state": "Warehouse ticket: goods class fragile, stored in zone B. Rulebook: flammable goods in zone A go to the hazmat crew, in zone B to the shift lead; fragile goods always go to the handler; standard goods need no page. Which route?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which route under the rulebook?",
+   "criteria": {
+    "hazmat": "Page hazmat crew.",
+    "shift_lead": "Page shift lead.",
+    "handler": "Page handler.",
+    "no_page": "No page, ticket only."
+   }
+  },
+  "labels": [
+   "hazmat",
+   "shift_lead",
+   "handler",
+   "no_page"
+  ],
+  "expected": "handler",
+  "group": "seal-multihop",
+  "gold_idx": 2
+ },
+ {
+  "id": "seal-hop-wh-4",
+  "family": "multihop",
+  "state": "Warehouse ticket: goods class fragile, stored in zone B. Rulebook: flammable goods in zone A go to the hazmat crew, in zone B to the shift lead; fragile goods always go to the handler; standard goods need no page. Which route?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which route under the rulebook?",
+   "criteria": {
+    "hazmat": "Page hazmat crew.",
+    "shift_lead": "Page shift lead.",
+    "handler": "Page handler.",
+    "no_page": "No page, ticket only."
+   }
+  },
+  "labels": [
+   "hazmat",
+   "shift_lead",
+   "handler",
+   "no_page"
+  ],
+  "expected": "handler",
+  "group": "seal-multihop",
+  "gold_idx": 2
+ },
+ {
+  "id": "seal-hop-wh-5",
+  "family": "multihop",
+  "state": "Warehouse ticket: goods class standard, stored in zone A. Rulebook: flammable goods in zone A go to the hazmat crew, in zone B to the shift lead; fragile goods always go to the handler; standard goods need no page. Which route?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which route under the rulebook?",
+   "criteria": {
+    "hazmat": "Page hazmat crew.",
+    "shift_lead": "Page shift lead.",
+    "handler": "Page handler.",
+    "no_page": "No page, ticket only."
+   }
+  },
+  "labels": [
+   "hazmat",
+   "shift_lead",
+   "handler",
+   "no_page"
+  ],
+  "expected": "no_page",
+  "group": "seal-multihop",
+  "gold_idx": 3
+ },
+ {
+  "id": "seal-hop-wh-6",
+  "family": "multihop",
+  "state": "Warehouse ticket: goods class fragile, stored in zone B. Rulebook: flammable goods in zone A go to the hazmat crew, in zone B to the shift lead; fragile goods always go to the handler; standard goods need no page. Which route?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which route under the rulebook?",
+   "criteria": {
+    "hazmat": "Page hazmat crew.",
+    "shift_lead": "Page shift lead.",
+    "handler": "Page handler.",
+    "no_page": "No page, ticket only."
+   }
+  },
+  "labels": [
+   "hazmat",
+   "shift_lead",
+   "handler",
+   "no_page"
+  ],
+  "expected": "handler",
+  "group": "seal-multihop",
+  "gold_idx": 2
+ },
+ {
+  "id": "seal-hop-wh-7",
+  "family": "multihop",
+  "state": "Warehouse ticket: goods class fragile, stored in zone A. Rulebook: flammable goods in zone A go to the hazmat crew, in zone B to the shift lead; fragile goods always go to the handler; standard goods need no page. Which route?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which route under the rulebook?",
+   "criteria": {
+    "hazmat": "Page hazmat crew.",
+    "shift_lead": "Page shift lead.",
+    "handler": "Page handler.",
+    "no_page": "No page, ticket only."
+   }
+  },
+  "labels": [
+   "hazmat",
+   "shift_lead",
+   "handler",
+   "no_page"
+  ],
+  "expected": "handler",
+  "group": "seal-multihop",
+  "gold_idx": 2
+ },
+ {
+  "id": "seal-hop-wh-8",
+  "family": "multihop",
+  "state": "Warehouse ticket: goods class fragile, stored in zone A. Rulebook: flammable goods in zone A go to the hazmat crew, in zone B to the shift lead; fragile goods always go to the handler; standard goods need no page. Which route?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which route under the rulebook?",
+   "criteria": {
+    "hazmat": "Page hazmat crew.",
+    "shift_lead": "Page shift lead.",
+    "handler": "Page handler.",
+    "no_page": "No page, ticket only."
+   }
+  },
+  "labels": [
+   "hazmat",
+   "shift_lead",
+   "handler",
+   "no_page"
+  ],
+  "expected": "handler",
+  "group": "seal-multihop",
+  "gold_idx": 2
+ },
+ {
+  "id": "seal-hop-wh-9",
+  "family": "multihop",
+  "state": "Warehouse ticket: goods class flammable, stored in zone A. Rulebook: flammable goods in zone A go to the hazmat crew, in zone B to the shift lead; fragile goods always go to the handler; standard goods need no page. Which route?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which route under the rulebook?",
+   "criteria": {
+    "hazmat": "Page hazmat crew.",
+    "shift_lead": "Page shift lead.",
+    "handler": "Page handler.",
+    "no_page": "No page, ticket only."
+   }
+  },
+  "labels": [
+   "hazmat",
+   "shift_lead",
+   "handler",
+   "no_page"
+  ],
+  "expected": "hazmat",
+  "group": "seal-multihop",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-prob-bk-0",
+  "family": "probability",
+  "state": "Nightly backup spans 6 drives, each fails with probability 0.05. P(all healthy) = 0.7351. Is at least one failure more likely than not?",
+  "question": {
+   "type": "noul",
+   "instructions": "Is a failure more likely than not?",
+   "criteria": {}
+  },
+  "labels": [
+   "0",
+   "1"
+  ],
+  "expected": 0,
+  "group": "seal-probability",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-prob-q-1",
+  "family": "probability",
+  "state": "Support queue audit of 41 tickets: 10 resolved same-day, 31 carried over. Which outcome is more likely for the next ticket?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which outcome is more likely?",
+   "criteria": {
+    "same_day": "Resolved same day.",
+    "carry": "Carried over."
+   }
+  },
+  "labels": [
+   "same_day",
+   "carry"
+  ],
+  "expected": "carry",
+  "group": "seal-probability",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-prob-se-2",
+  "family": "probability",
+  "state": "Sensor battery lasts 37 more hours; replacement crew arrives in 30 hours. Does the sensor die before the crew arrives?",
+  "question": {
+   "type": "noul",
+   "instructions": "Does the sensor die first?",
+   "criteria": {}
+  },
+  "labels": [
+   "0",
+   "1"
+  ],
+  "expected": 1,
+  "group": "seal-probability",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-prob-bk-3",
+  "family": "probability",
+  "state": "Nightly backup spans 4 drives, each fails with probability 0.1. P(all healthy) = 0.6561. Is at least one failure more likely than not?",
+  "question": {
+   "type": "noul",
+   "instructions": "Is a failure more likely than not?",
+   "criteria": {}
+  },
+  "labels": [
+   "0",
+   "1"
+  ],
+  "expected": 0,
+  "group": "seal-probability",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-prob-q-4",
+  "family": "probability",
+  "state": "Support queue audit of 33 tickets: 22 resolved same-day, 11 carried over. Which outcome is more likely for the next ticket?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which outcome is more likely?",
+   "criteria": {
+    "same_day": "Resolved same day.",
+    "carry": "Carried over."
+   }
+  },
+  "labels": [
+   "same_day",
+   "carry"
+  ],
+  "expected": "same_day",
+  "group": "seal-probability",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-prob-se-5",
+  "family": "probability",
+  "state": "Sensor battery lasts 49 more hours; replacement crew arrives in 30 hours. Does the sensor die before the crew arrives?",
+  "question": {
+   "type": "noul",
+   "instructions": "Does the sensor die first?",
+   "criteria": {}
+  },
+  "labels": [
+   "0",
+   "1"
+  ],
+  "expected": 1,
+  "group": "seal-probability",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-prob-bk-6",
+  "family": "probability",
+  "state": "Nightly backup spans 7 drives, each fails with probability 0.1. P(all healthy) = 0.4783. Is at least one failure more likely than not?",
+  "question": {
+   "type": "noul",
+   "instructions": "Is a failure more likely than not?",
+   "criteria": {}
+  },
+  "labels": [
+   "0",
+   "1"
+  ],
+  "expected": 1,
+  "group": "seal-probability",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-prob-q-7",
+  "family": "probability",
+  "state": "Support queue audit of 56 tickets: 16 resolved same-day, 40 carried over. Which outcome is more likely for the next ticket?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which outcome is more likely?",
+   "criteria": {
+    "same_day": "Resolved same day.",
+    "carry": "Carried over."
+   }
+  },
+  "labels": [
+   "same_day",
+   "carry"
+  ],
+  "expected": "carry",
+  "group": "seal-probability",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-prob-se-8",
+  "family": "probability",
+  "state": "Sensor battery lasts 9 more hours; replacement crew arrives in 30 hours. Does the sensor die before the crew arrives?",
+  "question": {
+   "type": "noul",
+   "instructions": "Does the sensor die first?",
+   "criteria": {}
+  },
+  "labels": [
+   "0",
+   "1"
+  ],
+  "expected": 0,
+  "group": "seal-probability",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-prob-bk-9",
+  "family": "probability",
+  "state": "Nightly backup spans 4 drives, each fails with probability 0.05. P(all healthy) = 0.8145. Is at least one failure more likely than not?",
+  "question": {
+   "type": "noul",
+   "instructions": "Is a failure more likely than not?",
+   "criteria": {}
+  },
+  "labels": [
+   "0",
+   "1"
+  ],
+  "expected": 0,
+  "group": "seal-probability",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-prob-q-10",
+  "family": "probability",
+  "state": "Support queue audit of 47 tickets: 20 resolved same-day, 27 carried over. Which outcome is more likely for the next ticket?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which outcome is more likely?",
+   "criteria": {
+    "same_day": "Resolved same day.",
+    "carry": "Carried over."
+   }
+  },
+  "labels": [
+   "same_day",
+   "carry"
+  ],
+  "expected": "carry",
+  "group": "seal-probability",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-prob-se-11",
+  "family": "probability",
+  "state": "Sensor battery lasts 86 more hours; replacement crew arrives in 30 hours. Does the sensor die before the crew arrives?",
+  "question": {
+   "type": "noul",
+   "instructions": "Does the sensor die first?",
+   "criteria": {}
+  },
+  "labels": [
+   "0",
+   "1"
+  ],
+  "expected": 1,
+  "group": "seal-probability",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-prob-bk-12",
+  "family": "probability",
+  "state": "Nightly backup spans 5 drives, each fails with probability 0.05. P(all healthy) = 0.7738. Is at least one failure more likely than not?",
+  "question": {
+   "type": "noul",
+   "instructions": "Is a failure more likely than not?",
+   "criteria": {}
+  },
+  "labels": [
+   "0",
+   "1"
+  ],
+  "expected": 0,
+  "group": "seal-probability",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-prob-q-13",
+  "family": "probability",
+  "state": "Support queue audit of 60 tickets: 24 resolved same-day, 36 carried over. Which outcome is more likely for the next ticket?",
+  "question": {
+   "type": "choice",
+   "instructions": "Which outcome is more likely?",
+   "criteria": {
+    "same_day": "Resolved same day.",
+    "carry": "Carried over."
+   }
+  },
+  "labels": [
+   "same_day",
+   "carry"
+  ],
+  "expected": "carry",
+  "group": "seal-probability",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-prob-se-14",
+  "family": "probability",
+  "state": "Sensor battery lasts 95 more hours; replacement crew arrives in 30 hours. Does the sensor die before the crew arrives?",
+  "question": {
+   "type": "noul",
+   "instructions": "Does the sensor die first?",
+   "criteria": {}
+  },
+  "labels": [
+   "0",
+   "1"
+  ],
+  "expected": 1,
+  "group": "seal-probability",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-0",
+  "family": "routing",
+  "state": "Case: building permit application status. Also: gas leak reported at the same address. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "permits": "building permit application status",
+    "safety": "gas leak reported at the same address"
+   }
+  },
+  "labels": [
+   "permits",
+   "safety"
+  ],
+  "expected": "safety",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-1",
+  "family": "routing",
+  "state": "Case: missing overtime on payslip. Also: impossible-travel login on payroll admin account. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "payroll": "missing overtime on payslip",
+    "security": "impossible-travel login on payroll admin account"
+   }
+  },
+  "labels": [
+   "payroll",
+   "security"
+  ],
+  "expected": "security",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-2",
+  "family": "routing",
+  "state": "Case: building permit application status. Also: gas leak reported at the same address. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "permits": "building permit application status",
+    "safety": "gas leak reported at the same address"
+   }
+  },
+  "labels": [
+   "permits",
+   "safety"
+  ],
+  "expected": "safety",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-3",
+  "family": "routing",
+  "state": "Case: missing overtime on payslip. Also: impossible-travel login on payroll admin account. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "payroll": "missing overtime on payslip",
+    "security": "impossible-travel login on payroll admin account"
+   }
+  },
+  "labels": [
+   "payroll",
+   "security"
+  ],
+  "expected": "security",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-4",
+  "family": "routing",
+  "state": "Case: building permit application status. Also: gas leak reported at the same address. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "permits": "building permit application status",
+    "safety": "gas leak reported at the same address"
+   }
+  },
+  "labels": [
+   "permits",
+   "safety"
+  ],
+  "expected": "safety",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-5",
+  "family": "routing",
+  "state": "Case: missing overtime on payslip. Also: impossible-travel login on payroll admin account. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "payroll": "missing overtime on payslip",
+    "security": "impossible-travel login on payroll admin account"
+   }
+  },
+  "labels": [
+   "payroll",
+   "security"
+  ],
+  "expected": "security",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-6",
+  "family": "routing",
+  "state": "Case: building permit application status. Also: gas leak reported at the same address. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "permits": "building permit application status",
+    "safety": "gas leak reported at the same address"
+   }
+  },
+  "labels": [
+   "permits",
+   "safety"
+  ],
+  "expected": "safety",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-7",
+  "family": "routing",
+  "state": "Case: missing overtime on payslip. Also: impossible-travel login on payroll admin account. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "payroll": "missing overtime on payslip",
+    "security": "impossible-travel login on payroll admin account"
+   }
+  },
+  "labels": [
+   "payroll",
+   "security"
+  ],
+  "expected": "security",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-8",
+  "family": "routing",
+  "state": "Case: building permit application status. Also: gas leak reported at the same address. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "permits": "building permit application status",
+    "safety": "gas leak reported at the same address"
+   }
+  },
+  "labels": [
+   "permits",
+   "safety"
+  ],
+  "expected": "safety",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-9",
+  "family": "routing",
+  "state": "Case: missing overtime on payslip. Also: impossible-travel login on payroll admin account. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "payroll": "missing overtime on payslip",
+    "security": "impossible-travel login on payroll admin account"
+   }
+  },
+  "labels": [
+   "payroll",
+   "security"
+  ],
+  "expected": "security",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-10",
+  "family": "routing",
+  "state": "Case: building permit application status. Also: gas leak reported at the same address. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "permits": "building permit application status",
+    "safety": "gas leak reported at the same address"
+   }
+  },
+  "labels": [
+   "permits",
+   "safety"
+  ],
+  "expected": "safety",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-11",
+  "family": "routing",
+  "state": "Case: missing overtime on payslip. Also: impossible-travel login on payroll admin account. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "payroll": "missing overtime on payslip",
+    "security": "impossible-travel login on payroll admin account"
+   }
+  },
+  "labels": [
+   "payroll",
+   "security"
+  ],
+  "expected": "security",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-12",
+  "family": "routing",
+  "state": "Case: building permit application status. Also: gas leak reported at the same address. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "permits": "building permit application status",
+    "safety": "gas leak reported at the same address"
+   }
+  },
+  "labels": [
+   "permits",
+   "safety"
+  ],
+  "expected": "safety",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-13",
+  "family": "routing",
+  "state": "Case: missing overtime on payslip. Also: impossible-travel login on payroll admin account. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "payroll": "missing overtime on payslip",
+    "security": "impossible-travel login on payroll admin account"
+   }
+  },
+  "labels": [
+   "payroll",
+   "security"
+  ],
+  "expected": "security",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-route-14",
+  "family": "routing",
+  "state": "Case: building permit application status. Also: gas leak reported at the same address. Policy: safety/security cues take precedence over permits/payroll.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which desk owns this case under precedence?",
+   "criteria": {
+    "permits": "building permit application status",
+    "safety": "gas leak reported at the same address"
+   }
+  },
+  "labels": [
+   "permits",
+   "safety"
+  ],
+  "expected": "safety",
+  "group": "seal-routing",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-emo-0",
+  "family": "emotion",
+  "state": "I am furious about this outage, fix it now!",
+  "question": {
+   "type": "choice",
+   "instructions": "Which emotion is expressed?",
+   "criteria": {
+    "sadness": "sadness",
+    "joy": "joy",
+    "love": "love",
+    "anger": "anger",
+    "fear": "fear",
+    "surprise": "surprise"
+   }
+  },
+  "labels": [
+   "sadness",
+   "joy",
+   "love",
+   "anger",
+   "fear",
+   "surprise"
+  ],
+  "expected": "anger",
+  "group": "seal-emotion",
+  "gold_idx": 3
+ },
+ {
+  "id": "seal-emo-1",
+  "family": "emotion",
+  "state": "What a joyful surprise, thank you so much!",
+  "question": {
+   "type": "choice",
+   "instructions": "Which emotion is expressed?",
+   "criteria": {
+    "sadness": "sadness",
+    "joy": "joy",
+    "love": "love",
+    "anger": "anger",
+    "fear": "fear",
+    "surprise": "surprise"
+   }
+  },
+  "labels": [
+   "sadness",
+   "joy",
+   "love",
+   "anger",
+   "fear",
+   "surprise"
+  ],
+  "expected": "joy",
+  "group": "seal-emotion",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-emo-2",
+  "family": "emotion",
+  "state": "I feel so alone since the move, everything is grey.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which emotion is expressed?",
+   "criteria": {
+    "sadness": "sadness",
+    "joy": "joy",
+    "love": "love",
+    "anger": "anger",
+    "fear": "fear",
+    "surprise": "surprise"
+   }
+  },
+  "labels": [
+   "sadness",
+   "joy",
+   "love",
+   "anger",
+   "fear",
+   "surprise"
+  ],
+  "expected": "sadness",
+  "group": "seal-emotion",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-emo-3",
+  "family": "emotion",
+  "state": "That strange noise at night terrifies me.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which emotion is expressed?",
+   "criteria": {
+    "sadness": "sadness",
+    "joy": "joy",
+    "love": "love",
+    "anger": "anger",
+    "fear": "fear",
+    "surprise": "surprise"
+   }
+  },
+  "labels": [
+   "sadness",
+   "joy",
+   "love",
+   "anger",
+   "fear",
+   "surprise"
+  ],
+  "expected": "fear",
+  "group": "seal-emotion",
+  "gold_idx": 4
+ },
+ {
+  "id": "seal-emo-4",
+  "family": "emotion",
+  "state": "I am furious about this outage, fix it now!",
+  "question": {
+   "type": "choice",
+   "instructions": "Which emotion is expressed?",
+   "criteria": {
+    "sadness": "sadness",
+    "joy": "joy",
+    "love": "love",
+    "anger": "anger",
+    "fear": "fear",
+    "surprise": "surprise"
+   }
+  },
+  "labels": [
+   "sadness",
+   "joy",
+   "love",
+   "anger",
+   "fear",
+   "surprise"
+  ],
+  "expected": "anger",
+  "group": "seal-emotion",
+  "gold_idx": 3
+ },
+ {
+  "id": "seal-emo-5",
+  "family": "emotion",
+  "state": "What a joyful surprise, thank you so much!",
+  "question": {
+   "type": "choice",
+   "instructions": "Which emotion is expressed?",
+   "criteria": {
+    "sadness": "sadness",
+    "joy": "joy",
+    "love": "love",
+    "anger": "anger",
+    "fear": "fear",
+    "surprise": "surprise"
+   }
+  },
+  "labels": [
+   "sadness",
+   "joy",
+   "love",
+   "anger",
+   "fear",
+   "surprise"
+  ],
+  "expected": "joy",
+  "group": "seal-emotion",
+  "gold_idx": 1
+ },
+ {
+  "id": "seal-emo-6",
+  "family": "emotion",
+  "state": "I feel so alone since the move, everything is grey.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which emotion is expressed?",
+   "criteria": {
+    "sadness": "sadness",
+    "joy": "joy",
+    "love": "love",
+    "anger": "anger",
+    "fear": "fear",
+    "surprise": "surprise"
+   }
+  },
+  "labels": [
+   "sadness",
+   "joy",
+   "love",
+   "anger",
+   "fear",
+   "surprise"
+  ],
+  "expected": "sadness",
+  "group": "seal-emotion",
+  "gold_idx": 0
+ },
+ {
+  "id": "seal-emo-7",
+  "family": "emotion",
+  "state": "That strange noise at night terrifies me.",
+  "question": {
+   "type": "choice",
+   "instructions": "Which emotion is expressed?",
+   "criteria": {
+    "sadness": "sadness",
+    "joy": "joy",
+    "love": "love",
+    "anger": "anger",
+    "fear": "fear",
+    "surprise": "surprise"
+   }
+  },
+  "labels": [
+   "sadness",
+   "joy",
+   "love",
+   "anger",
+   "fear",
+   "surprise"
+  ],
+  "expected": "fear",
+  "group": "seal-emotion",
+  "gold_idx": 4
+ },
+ {
+  "id": "seal-emo-8",
+  "family": "emotion",
+  "state": "I am furious about this outage, fix it now!",
+  "question": {
+   "type": "choice",
+   "instructions": "Which emotion is expressed?",
+   "criteria": {
+    "sadness": "sadness",
+    "joy": "joy",
+    "love": "love",
+    "anger": "anger",
+    "fear": "fear",
+    "surprise": "surprise"
+   }
+  },
+  "labels": [
+   "sadness",
+   "joy",
+   "love",
+   "anger",
+   "fear",
+   "surprise"
+  ],
+  "expected": "anger",
+  "group": "seal-emotion",
+  "gold_idx": 3
+ },
+ {
+  "id": "seal-emo-9",
+  "family": "emotion",
+  "state": "What a joyful surprise, thank you so much!",
+  "question": {
+   "type": "choice",
+   "instructions": "Which emotion is expressed?",
+   "criteria": {
+    "sadness": "sadness",
+    "joy": "joy",
+    "love": "love",
+    "anger": "anger",
+    "fear": "fear",
+    "surprise": "surprise"
+   }
+  },
+  "labels": [
+   "sadness",
+   "joy",
+   "love",
+   "anger",
+   "fear",
+   "surprise"
+  ],
+  "expected": "joy",
+  "group": "seal-emotion",
+  "gold_idx": 1
+ }
+]
