@@ -52,6 +52,8 @@ def main():
     ap.add_argument("--jb", default="/tmp/jevbench/datasets/public")
     ap.add_argument("--ckpt_base", default="/teamspace/studios/this_studio/frontier")
     ap.add_argument("--out", default="bench_full.json")
+    ap.add_argument("--ens_pair", default="v7,v8ddp",
+                    help="two model tags to probability-average as 'ens'")
     a = ap.parse_args()
     items = []
     for f in sorted(glob.glob(f"{a.jb}/*.jsonl")):
@@ -75,7 +77,8 @@ def main():
         else:
             from agent import FrontierAgent
             d = {"v3": "frontier_ckpt_v3", "v7": "frontier_ckpt_v7",
-                 "v8": "frontier_ckpt_v8", "v8ddp": "frontier_ckpt_v8_ddp"}.get(tag, tag)
+                 "v8": "frontier_ckpt_v8", "v8ddp": "frontier_ckpt_v8_ddp",
+                 "v9": "frontier_ckpt_v9"}.get(tag, tag)
             if not os.path.isabs(d):
                 d = os.path.join(a.ckpt_base, d)
             agents[tag] = FrontierAgent(d)
@@ -92,8 +95,9 @@ def main():
             except Exception:
                 ans[tag] = None
         if "ens" in tags:
-            if ans.get("v7") and ans.get("v8ddp"):
-                A, B = ans["v7"], ans["v8ddp"]
+            _e1, _e2 = [x.strip() for x in a.ens_pair.split(",")]
+            if ans.get(_e1) and ans.get(_e2):
+                A, B = ans[_e1], ans[_e2]
                 if t == "noul":
                     ans["ens"] = {"noul": (A["noul"] + B["noul"]) / 2, "probs": {}}
                 else:
