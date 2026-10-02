@@ -1,0 +1,42 @@
+{
+ "laya": {
+  "acc": 0.75,
+  "proper100": 82.72,
+  "by": {
+   "emotion": 1.0,
+   "multihop": 1.0,
+   "probability": 0.467,
+   "routing": 0.533
+  }
+ },
+ "v7": {
+  "acc": 0.7667,
+  "proper100": 83.91,
+  "by": {
+   "emotion": 1.0,
+   "multihop": 0.95,
+   "probability": 0.6,
+   "routing": 0.533
+  }
+ },
+ "v8": {
+  "acc": 0.85,
+  "proper100": 85.98,
+  "by": {
+   "emotion": 1.0,
+   "multihop": 0.95,
+   "probability": 0.467,
+   "routing": 1.0
+  }
+ },
+ "v9": {
+  "acc": 0.6667,
+  "proper100": 83.18,
+  "by": {
+   "emotion": 1.0,
+   "multihop": 0.95,
+   "probability": 0.2,
+   "routing": 0.533
+  }
+ }
+}
