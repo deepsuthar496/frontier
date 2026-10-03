@@ -169,7 +169,11 @@ def main():
               f"disagree={int((_AL==_KDP['disagree']).sum())}", flush=True)
 
     if a.teacher_npz:
-        _merge(parts["train"], a.teacher_npz, "teacher")
+        _n = len(np.load(a.teacher_npz, allow_pickle=True)["logits"])
+        _tail = parts["train"][_n:]
+        assert _tail and all(it.get("source") == "synth-hard-v1" for it in _tail), \
+            "teacher_npz must cover a v9-ordered prefix; tail must be hard rows"
+        _merge(parts["train"][:_n], a.teacher_npz, "teacher")
     if a.teacher_hard_npz:
         _tz = np.load(a.teacher_hard_npz, allow_pickle=True)
         _hTL, _hAL = _tz["logits"].astype(np.float32), _tz["alphas"].astype(np.float32)
