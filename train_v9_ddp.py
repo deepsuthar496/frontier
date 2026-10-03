@@ -229,6 +229,7 @@ def main():
         tot = 0
         nb = 0
         _comp = {}
+        _nmb = 0
         mbs = my_mbs(microbatches_for(ep))
         opt.zero_grad()
         for ui, mb in enumerate(mbs):
@@ -260,6 +261,7 @@ def main():
             with (nullcontext() if sync else model.no_sync()):
                 scaler.scale(loss).backward()
             tot += loss.item()
+            _nmb += 1
             for _k, _v in _parts.items():
                 _comp[_k] = _comp.get(_k, 0.0) + _v
             if sync:
@@ -287,7 +289,7 @@ def main():
             m = {"acc": sum(g["acc"] * g["n"] for g in got) / ntot,
                  "brier": sum(g["brier"] * g["n"] for g in got) / ntot,
                  "ece": got[0]["ece"], "score_mae": got[0]["score_mae"]}
-            _PCI = {k: round(v / max(1, len(mine)), 4) for k, v in _comp.items()}
+            _PCI = {k: round(v / max(1, _nmb), 4) for k, v in _comp.items()}
             print(f"ep {ep+1} loss {tot/max(1,nb):.4f} dev acc {m['acc']:.3f} brier {m['brier']:.4f} parts={_PCI}", flush=True)
             epdir = f"{a.out}_ep{ep+1}"
             os.makedirs(f"{epdir}/encoder", exist_ok=True)
