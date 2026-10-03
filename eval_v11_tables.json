@@ -1,0 +1,37 @@
+{
+ "v11_base": {
+  "dev": {
+   "acc": 0.947
+  },
+  "harddev": {
+   "acc": 1.0
+  },
+  "guard": {
+   "ag": 0.97,
+   "em": 0.7867
+  },
+  "sealed60": {
+   "acc": 0.9167
+  },
+  "jev231": {
+   "acc": 0.9177
+  }
+ },
+ "v11_goldhard": {
+  "dev": {
+   "acc": 0.944
+  },
+  "harddev": {
+   "acc": 1.0
+  },
+  "guard": {
+   "ag": 0.97,
+   "em": 0.78
+  },
+  "sealed60": {
+   "acc": 0.9333,
+   "proper100": 92.84
+  }
+ },
+ "decision": "KD policy on hard rows is irrelevant at this scale (all deltas within noise); v11=base stands; selective skipped as bounded-between-identical. Next: template diversity + E6 aux heads (v12)."
+}
