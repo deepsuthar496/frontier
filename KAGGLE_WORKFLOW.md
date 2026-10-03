@@ -103,6 +103,23 @@ There is NO remote kill. A bad kernel runs to completion — budget for it
 
 ## 6. Quota discipline
 
+## 7. Pre-launch verification gate (mandatory — a 30-min run died on a NameError)
+
+```bash
+cd frontier
+python3 -m pyflakes *.py tests/*.py | grep -v "imported but unused\|assigned to but never used\|missing placeholders"
+# must print NOTHING else (undefined names = dead kernels)
+python3 tests/test_mapping.py && python3 tests/test_kd.py && python3 tests/test_pipeline.py
+python -m compileall -q *.py
+```
+
+What each catches: pyflakes F821 (the `len(mine)` class — static, instant),
+mapping tests (coordinate drift), kd tests (wrong coefficients), pipeline
+dry-run (collate/loss/save contracts incl. the variable-k batch that killed
+v6, on CPU, no GPU needed). Kernel launchers get `ast.parse` + pyflakes;
+their env-specific paths are validated by `find()`-with-assert, never blind
+indexing. Never push a kernel version until the gate is green.
+
 - One kernel at a time (each holds its own 2xT4 box; overlaps burn 2x quota).
 - Snapshot per epoch + fp16 export every run (a dead kernel's outputs are
   still downloadable — v4's weights were recovered this way).
