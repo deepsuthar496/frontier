@@ -157,8 +157,10 @@ def main():
             assert _meta.get("kd_policy") == _KDP, f"{tag} policy {_meta.get('kd_policy')} != {_KDP}"
         else:
             # legacy file (pre-meta): validate alpha values match policy instead
-            _vals = set(float(x) for x in np.unique(_AL))
-            assert _vals <= {float(_KDP["agree"]), float(_KDP["disagree"]), float(_KDP["missing"])}, \
+            # (float32 artifacts: compare with tolerance, not set equality)
+            _allowed = [float(_KDP["agree"]), float(_KDP["disagree"]), float(_KDP["missing"])]
+            _vals = [float(x) for x in np.unique(_AL)]
+            assert all(any(abs(v - a) < 1e-6 for a in _allowed) for v in _vals), \
                 f"{tag} alphas {_vals} outside policy"
             print(f"{tag}: no meta (legacy); alpha values validated against policy", flush=True)
         _ids = [str(x) for x in _tz["ids"]]
