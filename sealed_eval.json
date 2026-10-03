@@ -38,5 +38,15 @@
    "probability": 0.2,
    "routing": 0.533
   }
+ },
+ "v10": {
+  "acc": 0.85,
+  "proper100": 85.05,
+  "by": {
+   "emotion": 1.0,
+   "multihop": 0.95,
+   "probability": 0.467,
+   "routing": 1.0
+  }
  }
 }
