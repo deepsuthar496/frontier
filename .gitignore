@@ -20,3 +20,6 @@ frontier_ckpt_v8*
 frontier_ckpt_v8_1024/
 frontier_ckpt_v8_ddp/
 frontier_ckpt_v9/
+frontier_ckpt_v10/
+frontier_ckpt*/model.safetensors
+frontier_ckpt*/model_fp16.safetensors
