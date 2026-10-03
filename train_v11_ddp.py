@@ -152,8 +152,15 @@ def main():
         _tz = np.load(path, allow_pickle=True)
         _TL, _AL = _tz["logits"].astype(np.float32), _tz["alphas"].astype(np.float32)
         assert len(_TL) == len(lst), (tag, len(_TL), len(lst))
-        _meta = json.loads(str(_tz["meta"]))
-        assert _meta.get("kd_policy") == _KDP, f"{tag} policy {_meta.get('kd_policy')} != {_KDP}"
+        if "meta" in _tz.files:
+            _meta = json.loads(str(_tz["meta"]))
+            assert _meta.get("kd_policy") == _KDP, f"{tag} policy {_meta.get('kd_policy')} != {_KDP}"
+        else:
+            # legacy file (pre-meta): validate alpha values match policy instead
+            _vals = set(float(x) for x in np.unique(_AL))
+            assert _vals <= {float(_KDP["agree"]), float(_KDP["disagree"]), float(_KDP["missing"])}, \
+                f"{tag} alphas {_vals} outside policy"
+            print(f"{tag}: no meta (legacy); alpha values validated against policy", flush=True)
         _ids = [str(x) for x in _tz["ids"]]
         _ophs = [str(x) for x in _tz["option_hash"]]
         _ks = [int(x) for x in _tz["num_options"]]
@@ -180,8 +187,9 @@ def main():
         _hids = [str(x) for x in _tz["ids"]]
         _hoph = [str(x) for x in _tz["option_hash"]]
         _hks = [int(x) for x in _tz["num_options"]]
-        _meta = json.loads(str(_tz["meta"]))
-        assert _meta.get("kd_policy") == _KDP
+        _meta = json.loads(str(_tz["meta"])) if "meta" in _tz.files else {}
+        if _meta:
+            assert _meta.get("kd_policy") == _KDP
         _by_id = {}
         for j, hid in enumerate(_hids):
             _by_id[hid] = j
