@@ -163,18 +163,27 @@ def main():
             assert all(any(abs(v - a) < 1e-6 for a in _allowed) for v in _vals), \
                 f"{tag} alphas {_vals} outside policy"
             print(f"{tag}: no meta (legacy); alpha values validated against policy", flush=True)
-        _ids = [str(x) for x in _tz["ids"]]
-        _ophs = [str(x) for x in _tz["option_hash"]]
-        _ks = [int(x) for x in _tz["num_options"]]
-        for i, it in enumerate(lst):
-            q = {"t": it["q"]["t"], "ins": it["q"]["ins"], "crit": it["q"]["crit"]}
-            assert _cid(it["state"], q, it["gold"]) == _ids[i], f"{tag} row {i} id mismatch"
-            assert _oph(q) == _ophs[i], f"{tag} row {i} option mismatch"
-            k = len(q["crit"]) if q["t"] != "noul" else 2
-            assert _ks[i] == k, f"{tag} row {i} k mismatch"
-            it["teacher"] = [float(x) for x in _TL[i, :k]]
-            it["alpha"] = float(_AL[i])
-        print(f"{tag} merged+validated: agree={int((_AL==_KDP['agree']).sum())} "
+        if "ids" in _tz.files:
+            _ids = [str(x) for x in _tz["ids"]]
+            _ophs = [str(x) for x in _tz["option_hash"]]
+            _ks = [int(x) for x in _tz["num_options"]]
+            for i, it in enumerate(lst):
+                q = {"t": it["q"]["t"], "ins": it["q"]["ins"], "crit": it["q"]["crit"]}
+                assert _cid(it["state"], q, it["gold"]) == _ids[i], f"{tag} row {i} id mismatch"
+                assert _oph(q) == _ophs[i], f"{tag} row {i} option mismatch"
+                k = len(q["crit"]) if q["t"] != "noul" else 2
+                assert _ks[i] == k, f"{tag} row {i} k mismatch"
+                it["teacher"] = [float(x) for x in _TL[i, :k]]
+                it["alpha"] = float(_AL[i])
+            print(f"{tag} merged+id-validated", flush=True)
+        else:
+            for i, it in enumerate(lst):
+                q = {"t": it["q"]["t"], "ins": it["q"]["ins"], "crit": it["q"]["crit"]}
+                k = len(q["crit"]) if q["t"] != "noul" else 2
+                it["teacher"] = [float(x) for x in _TL[i, :k]]
+                it["alpha"] = float(_AL[i])
+            print(f"{tag} merged positionally (legacy, length asserted)", flush=True)
+        print(f"{tag}: agree={int((_AL==_KDP['agree']).sum())} "
               f"disagree={int((_AL==_KDP['disagree']).sum())}", flush=True)
 
     if a.teacher_npz:
