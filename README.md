@@ -1,63 +1,93 @@
-# Frontier Decision Engine — lighter, faster alternative to Laya / TypeSafe Jev
+# Frontier Decision Engine — fast, local, typed decisions
 
-## Official benchmark: Typed Decision Bench v0.3 (Blobfish, 5,387 items, 25 tasks)
-Full roster, byte-identical inputs, verbatim official scoring
-(`1 - normalised Brier` per question, mean per item ×100, unanswered = 0).
-Run: `python3 bench_tdb.py` (use `--fraction 0.5` for the 2-min half; reproduces full scores ±0.12).
-No TDB item or question sentence was trained on (per its contamination notice).
+Flagship: **v8** (`frontier_ckpt_v8_ddp`, 429M, 1024 ctx) — best clean-room
+generalization. Reference: **v7** (best clean public-bench row). History and
+per-run records live in `JEV_BOTTLENECKS.md`; the remote-GPU runbook in
+`KAGGLE_WORKFLOW.md`.
 
-| System | DecisionScore | Primary acc | ECE(max-p) | Params |
-|---|---|---|---|---|
-| Jev 1.13 (published) | 81.70 | — | — | closed |
-| Laya english (measured) | 62.78 | 0.5195 | 0.1917 | 421M |
-| **Frontier v3 (measured, champion)** | **61.95** | 0.4187 | **0.1096** | **168M** |
-| Frontier v4 (rejected) | 61.17* | 0.4221 | 0.1624 | 168M |
-| Frontier v5 (rejected) | 60.99* | 0.4181 | 0.1435 | 168M |
+## Measured standings (our harness unless noted)
 
-*half-subset; halves reproduce full scores within 0.12 (laya 62.90/62.78, v3 61.83/61.95).
-v4/v5 continued fine-tuning on synthetic drifted off v3's optimum — rejected, v3 stays champion.
-Both models answered 5028/5028 (359 withheld = 0 for everyone).
+Full JevBench public, 231 items, accuracy + mean proper score
+(`bench_full_231.json`, rev `bb05a33`):
 
-## How Laya is built (from HF inspection)
-- Backbone: `ModernBERT-large` 395M (hidden 1024, 28 layers, 8k RoPE) + 2-layer TransformerEncoder head + per-option `[MASK]` marker scorer + act/escalate head = **421M**.
-- I/O: single forward pass `[CLS] <type> instructions [SEP] [MASK] opt… [SEP] state [SEP]`; logits read at marker positions, softmaxed per question. `head_max_len` 192 / `max_len` 512 (multilingual 256/1024, encoder to 8k).
-- Training: RLCD (REINFORCE + group-mean baseline, reward = log + spherical + RPS, TD λ=1 for episodes).
-- Calibration: per-bucket temperatures (`choice:2/3-5/6-10/11+`, `score:3-5`, `noul:2`).
-- Measured here on T4: ~39ms / 2 questions warm; published: 39.5ms/1q, 158.6ms/10q, ECE 0.081 post-temp, typed-decisions-ft 0.766.
+| System | acc | proper | Params |
+|---|---|---|---|
+| Laya english | 0.5801 | 73.35 | 421M |
+| Frontier v7 | 0.5844 | 74.42 | 429M |
+| Frontier v8-ddp | 0.5541 | 68.45 | 429M |
+| v7+v8 ensemble | 0.5411 | 72.54 | — |
 
-## This model (guide.md blueprint, bugs fixed)
-- Backbone: `ModernBERT-base` 149M (hidden 768) + 2-layer refine + **SchemaCrossAttentionHead** (option markers as queries cross-attend full doc — strictly more expressive than Laya's linear scorer, same single-pass marker scheme, Jev-compatible) + pooled score/noul heads + act head = **168.5M (2.5× smaller)**.
-- Loss: `CE + τ²·KL(teacher‖student) + Brier + RPS(score)` (guide.md, strictly proper — no gaming via overconfidence).
-- Teachers: rule/logic ground-truth + softened paraphrase teacher (no API keys needed on T4); hard negatives (options 90% identical, one conditional clause) + paraphrase augmentation round 2.
-- Calibration: per-bucket temperature grid fit on held-out split.
-- Export: `model.safetensors` + `model.onnx` (opset 17, verified with onnxruntime).
+v8 leads sealed/emotion (below) while trailing full-231 public: it trades
+public-hard memorization for clean-room generalization. v9 scores 0.827
+public but trained on those items (disclosed) — excluded from ranking.
 
-## Measured on this T4 (Tesla T4, fp16)
-| Metric | Laya (english, 421M) | Frontier (168.5M) |
+Sealed-60 (fresh templates, unseen by all training, `sealed_eval.json`):
+
+| System | acc | proper |
 |---|---|---|
-| Params | 421M | **168.5M (2.5× smaller)** |
-| Latency 1q | 39.5ms publ. | **~22ms p50** |
-| Latency 10q batched | 158.6ms (15.9ms/q) | **~22ms (2.2ms/q, ~7× faster)** |
-| ECE (calibrated, our synth bench) | 0.081 publ. (their bench) | **0.064** |
-| Brier (calibrated, our synth bench) | — | **0.0007–0.004** |
-| Synth held-out acc | — | 1.00 (in-distribution; see limits) |
-| Hard paraphrase stress (6 cases) | — | **6/6 after round 2** (4/6 after round 1) |
-| Live demo check (billing + churn) | billing 0.987 / noul 0.879 | billing 0.9998 / noul 0.9978 |
+| **v8** | **0.85** | **85.98** |
+| v7 | 0.7667 | 83.91 |
+| Laya english | 0.75 | 82.72 |
+| v9 | 0.6667 | 83.18 |
+
+Public sets (`eval_public_v8ddp.json`): AG News — v7 0.96 / v8 0.945 /
+Laya 0.95. Emotion — **v8 0.82** / v3 0.767 / v7 0.693 / Laya 0.647.
+
+Locked 708-item holdout, never trained on (`final_eval_v9v7.json`):
+v9 0.901 / Laya 0.573 / v7 0.504 (v9 rows are same-distribution shards).
+
+Official TDB v0.3 (historical, roster currently unavailable):
+Jev 1.13 published 81.70 · Laya 62.78 · v3 61.95 · v4 61.17* · v5 60.99*.
+Halves reproduce full scores ±0.12.
+
+## Latency (measured)
+
+| System | 1q short | 1q long | GPU 1q |
+|---|---|---|---|
+| Laya 421M | 222ms CPU / ~31ms T4 | 941ms CPU | ~31–44ms |
+| **v3 168M (fast low-end)** | **85ms CPU** | **356ms CPU** | ~26ms |
+| v8/v9 429M | ~230ms CPU | ~950ms CPU | ~36ms |
+
+Speed story split: v3 is the fast low-end model (2.6× Laya on CPU);
+v8/v9 buy accuracy at Laya-class speed. Batched GPU: encoder single-pass
+does ~1100 dec/s at B64 vs ~87 for autoregressive 12B-class (Winnow tables).
+
+## How it is built
+
+- Backbone: `ModernBERT-large` 395M (hidden 1024, 28 layers, 8k RoPE) +
+  2-layer refine + **SchemaCrossAttentionHead** (option markers as queries
+  cross-attend the doc — same single-pass marker scheme as Laya, Jev-compatible).
+- Loss: `CE(gold) + 0.1·Brier + 0.1·RPS(ordinal) + α·τ²·KL(teacher‖student)`,
+  `α`: agree 0.5 / disagree 0.1 (`common.KD_POLICY`, single source of truth).
+- Teachers: Laya (v6/v7), Laya + gold hybrid (v8), + disclosed JevBench-public
+  gold (v9). Kev-4B capture in progress for v10.
+- Splits: train/dev/cal/**final untouched**, sharded by group with class
+  coverage asserted. Job: `data_v9.py` → label → `train_v9_ddp.py` (DDP 2×T4).
+- E0 gates: canonical option mapping + round-trip tests (`tests/`),
+  teacher id/hash validation, KD policy persisted per checkpoint.
 
 ## Honest limits
-- Synth accuracy is in-distribution; it does **not** prove beating Laya's 0.766 on their private typed-decisions set or Jev's 0.727. Zero-shot public benchmarks (AG News, Banking77-77, MASSIVE, XNLI) were **not** run here — run `eval_bench.py` extended to those sets before claiming SOTA.
-- English-only (like Laya root). Multilingual needs mmBERT backbone swap.
-- `act_probability` head is untrained signal (same caveat as Laya #185) — gate on `confidence`.
-- 512 ctx in this ckpt (`head_max_len` 192); encoder supports 8k RoPE — raise `max_len` + retrain/fine-tune for long docs.
+
+- No sealed-external benchmark: strongest evidence is the sealed-60 and the
+  locked-708, both constructed in-house. Jev 81.70 is a published claim.
+- v9's public numbers are public-trained numbers (disclosed in
+  `data_v9.py`); its sealed-60 (0.667) shows template overfit — v9 is a
+  specialist, not the flagship.
+- `temperature_by_options` is `{}` everywhere (cal splits too small per
+  bucket); proper-score gaps are partly calibration, not just accuracy.
+- `act_probability` is an untrained signal — gate on `confidence`.
+- English-only.
 
 ## Use
+
 ```python
 from frontier.agent import FrontierAgent
-a = FrontierAgent("frontier_ckpt_final")
+a = FrontierAgent("frontier_ckpt_v8_ddp")  # flagship; v7 for the public-bench reference
 r = a.system_one("Hi, we were billed twice...", {
   "department": {"type": "choice", "instructions": "Which department?",
                  "criteria": {"billing": "invoices, payments, refunds", "technical": "bugs, outages", "other": "else"}},
   "churn_risk": {"type": "noul", "instructions": "Does the user threaten to cancel?"}})
 ```
-Train: `python train.py --epochs 4` · Continue: `python continue_train.py` · Eval: `python eval_bench.py`
-Files: `frontier/model.py common.py synth_data.py train.py continue_train.py eval_bench.py agent.py`, ckpt `frontier_ckpt_final/`.
+
+Long states: `a.cfg["evidence"] = {"enable": True, "strategy": "v2"}` (experimental;
+helps some longs, hurts multi-hop — see evals).
