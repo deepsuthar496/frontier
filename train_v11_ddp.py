@@ -101,7 +101,9 @@ def main():
     ap.add_argument("--init_hf", default=None,
                     help="HF encoder id for fresh init (no local ckpt); warm-starts from Laya")
     ap.add_argument("--teacher_npz", default=None,
-                    help="teacher_v9.npz {logits, alphas} aligned to train order; overrides item alpha")
+                    help="teacher file aligned to train order (prefix rows)")
+    ap.add_argument("--teacher_hard_npz", default=None,
+                    help="teacher file for hard rows, merged by content id")
     ap.add_argument("--data_npz", default=None,
                     help="alias: data file (defaults to --data)")
     a = ap.parse_args()
@@ -140,37 +142,69 @@ def main():
           "M from", init_tag, flush=True)
 
     parts = load_parts(a.data_npz or a.data)
-    # variant KD policy on hard rows (spec 3.2); logged per batch below
+    # variant KD policy on hard rows (spec 3.2) applies AFTER teacher merge below
     _nhard = sum(1 for it in parts["train"] if it.get("source") == "synth-hard-v1")
+    print(f"variant={a.variant} hard_train_rows={_nhard}", flush=True)
+    from common import content_id as _cid, option_hash as _oph
+    from common import KD_POLICY as _KDP
+
+    def _merge(lst, path, tag):
+        _tz = np.load(path, allow_pickle=True)
+        _TL, _AL = _tz["logits"].astype(np.float32), _tz["alphas"].astype(np.float32)
+        assert len(_TL) == len(lst), (tag, len(_TL), len(lst))
+        _meta = json.loads(str(_tz["meta"]))
+        assert _meta.get("kd_policy") == _KDP, f"{tag} policy {_meta.get('kd_policy')} != {_KDP}"
+        _ids = [str(x) for x in _tz["ids"]]
+        _ophs = [str(x) for x in _tz["option_hash"]]
+        _ks = [int(x) for x in _tz["num_options"]]
+        for i, it in enumerate(lst):
+            q = {"t": it["q"]["t"], "ins": it["q"]["ins"], "crit": it["q"]["crit"]}
+            assert _cid(it["state"], q, it["gold"]) == _ids[i], f"{tag} row {i} id mismatch"
+            assert _oph(q) == _ophs[i], f"{tag} row {i} option mismatch"
+            k = len(q["crit"]) if q["t"] != "noul" else 2
+            assert _ks[i] == k, f"{tag} row {i} k mismatch"
+            it["teacher"] = [float(x) for x in _TL[i, :k]]
+            it["alpha"] = float(_AL[i])
+        print(f"{tag} merged+validated: agree={int((_AL==_KDP['agree']).sum())} "
+              f"disagree={int((_AL==_KDP['disagree']).sum())}", flush=True)
+
+    if a.teacher_npz:
+        _merge(parts["train"], a.teacher_npz, "teacher")
+    if a.teacher_hard_npz:
+        _tz = np.load(a.teacher_hard_npz, allow_pickle=True)
+        _hTL, _hAL = _tz["logits"].astype(np.float32), _tz["alphas"].astype(np.float32)
+        _hids = [str(x) for x in _tz["ids"]]
+        _hoph = [str(x) for x in _tz["option_hash"]]
+        _hks = [int(x) for x in _tz["num_options"]]
+        _meta = json.loads(str(_tz["meta"]))
+        assert _meta.get("kd_policy") == _KDP
+        _by_id = {}
+        for j, hid in enumerate(_hids):
+            _by_id[hid] = j
+        _nh = 0
+        for it in parts["train"]:
+            if it.get("source") != "synth-hard-v1":
+                continue
+            q = {"t": it["q"]["t"], "ins": it["q"]["ins"], "crit": it["q"]["crit"]}
+            hid = _cid(it["state"], q, it["gold"])
+            assert hid in _by_id, f"hard row {it.get('id')} missing from teacher_hard"
+            j = _by_id[hid]
+            assert _hoph[j] == _oph(q)
+            k = len(q["crit"]) if q["t"] != "noul" else 2
+            assert _hks[j] == k
+            it["teacher"] = [float(x) for x in _hTL[j, :k]]
+            it["alpha"] = float(_hAL[j])
+            _nh += 1
+        print(f"teacher_hard merged by id: {_nh} rows", flush=True)
+    # variant policy AFTER merge (merge restores file alphas)
     for it in parts["train"]:
         if it.get("source") == "synth-hard-v1":
             if a.variant == "gold-hard":
                 it["alpha"] = 0.0
+                it["teacher"] = None
             elif a.variant == "selective" and int(it.get("difficulty", 1)) >= 2:
                 it["alpha"] = 0.0
-    print(f"variant={a.variant} hard_train_rows={_nhard}", flush=True)
-    if a.teacher_npz:
-        _tz = np.load(a.teacher_npz, allow_pickle=True)
-        _TL, _AL = _tz["logits"].astype(np.float32), _tz["alphas"].astype(np.float32)
-        assert len(_TL) == len(parts["train"]), (len(_TL), len(parts["train"]))
-        from common import content_id as _cid, option_hash as _oph
-        from common import KD_POLICY as _KDP
-        _meta = json.loads(str(_tz["meta"]))
-        assert _meta.get("kd_policy") == _KDP, f"teacher KD policy {_meta.get('kd_policy')} != {_KDP}"
-        _ids = [str(x) for x in _tz["ids"]]
-        _ophs = [str(x) for x in _tz["option_hash"]]
-        _ks = [int(x) for x in _tz["num_options"]]
-        for i, it in enumerate(parts["train"]):
-            q = {"t": it["q"]["t"], "ins": it["q"]["ins"], "crit": it["q"]["crit"]}
-            assert _cid(it["state"], q, it["gold"]) == _ids[i], f"teacher row {i} id mismatch"
-            assert _oph(q) == _ophs[i], f"teacher row {i} option mismatch"
-            k = len(q["crit"]) if q["t"] != "noul" else 2
-            assert _ks[i] == k, f"teacher row {i} k mismatch"
-            it["teacher"] = [float(x) for x in _TL[i, :k]]
-            it["alpha"] = float(_AL[i])
-        nag = int((_AL == _KDP["agree"]).sum())
-        print(f"teacher merged+validated: agree{_KDP['agree']}={nag} "
-              f"disagree{_KDP['disagree']}={int((_AL==_KDP['disagree']).sum())}", flush=True)
+                it["teacher"] = None
     print({k: len(v) for k, v in parts.items()}, flush=True)
     print(f"final held out: {len(parts['final'])} items (untouched)", flush=True)
     rng = random.Random(8)
