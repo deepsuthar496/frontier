@@ -20,6 +20,7 @@ def to_item(r):
             "source": "synth-hard-v1",
             "difficulty": int(r.get("difficulty", 1)),
             "template_id": r.get("template_id", ""),
+            "family": r.get("family", ""),
             "state_tokens": int(r.get("state_tokens", 0))}
 
 
