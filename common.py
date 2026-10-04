@@ -87,6 +87,17 @@ def collate(records, pad_id: int):
 
 
 # ---------------- losses (guide.md multi-objective) ----------------
+def margin_loss(student_logits, gold_idx, mask, margin=0.5):
+    """Listwise ranking hinge: gold must beat the best other option by margin.
+    Complements CE on precedence/exclusion rows (F2). Padded slots excluded."""
+    mf = mask.float()
+    B, K = student_logits.shape
+    gold_oh = torch.zeros_like(student_logits).scatter_(-1, gold_idx[:, None].clamp(0, K - 1), 1.0)
+    z = student_logits.masked_fill(~mask, -1e4)
+    best_other = (z - gold_oh * 2e4).max(-1).values
+    gold_z = (z * gold_oh).sum(-1)
+    has = mask.any(-1).float()
+    return ((margin - (gold_z - best_other)).clamp_min(0) * has).mean()
 def total_loss(student_logits, teacher_logits, target, mask, qtype,
                l_ce=1.0, l_kl=1.0, l_brier=0.5, tau=2.0, w_rps=1.0):
     """CE + tau^2 KL(teacher||student) + Brier + RPS-for-score. All proper."""
