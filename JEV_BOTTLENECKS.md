@@ -136,7 +136,38 @@ all-chunk encoder (keeps every representation — different from ranking).
 - Not proven: sealed-external generalization (all sealed sets are in-house),
   TDB/Jev comparability, low-end latency of anything but v3.
 
-## 4. Acceptance bar (unchanged)
+## 5. v11 results (2026-10-03/04): what moved and what didn't
+
+v11-base (v10 + 8k solver-verified hard rows, Kev KD, DDP):
+dev 0.947 · hard-dev 1.000 · sealed-60 **0.9167** · AG **0.97** · emotion 0.7867.
+v11-gold-hard (KD off on hard rows): dev 0.944 · hard-dev 1.000 ·
+sealed-60 **0.9333** · AG 0.97 · emotion 0.78.
+Hard-sealed templates (812 unseen parameterizations): **0.27 both variants**.
+
+Readings:
+- KD policy on hard rows is irrelevant (all variant deltas ≤ 1 answer).
+  Selective variant retired unrun (bounded between identical endpoints).
+- Sealed-60 gain (+6.7 over v10) is real transfer to new domains.
+- Hard-sealed collapse is template memorization: same generator, new numbers
+  fail while seen templates score 1.000. Both v10 and v11 fail identically,
+  so the teacher is exonerated — the generator's parameter coverage is guilty.
+- Emotion dip (0.82→0.78) comes from the hard-data distribution shift itself,
+  identical in both variants — not from KD.
+
+### A8. Template diversity (new #1 for v12)
+
+Generators must vary the decisive parameters, not just names: score cutoffs,
+rates, thresholds, rubric combinations — with counterfactual pairs at every
+setting. Measure unseen-parameterization accuracy during development
+(hard-sealed style), never just unseen-instance accuracy (hard-dev lies:
+1.000 vs 0.27 on the same generator).
+### A9. Intermediate supervision E6 (new for v12)
+
+Evidence/rule/prerequisite/exception heads as training-only targets, one at
+a time. The solver blocks already emit intermediates — wire one into the loss
+and test whether the model computes instead of memorizes.
+
+## 6. Acceptance bar (unchanged)
 
 Hard-family wins over Laya on unseen templates while holding emotion ≥ 0.80,
 with CIs and item counts — plus, now, a latency/RAM table for the shipped
