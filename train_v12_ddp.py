@@ -438,7 +438,9 @@ def main():
                    "head_max_len": 192, "temperature": temps, "temperature_by_options": temps_by,
                    "params_M": round(count_params(model) / 1e6, 1), "teacher": "selective-KD agree-only",
                    "tau": a.tau, "init": a.src, "world": WORLD,
-                   "kd_policy": KD_POLICY},
+                   "kd_policy": KD_POLICY,
+                   "listwise": a.listwise, "rec_steps": a.rec_steps,
+                   "w_margin": a.w_margin, "variant": a.variant},
                   open(f"{a.out}/frontier_config.json", "w"), indent=1)
         print("saved", a.out, f"final split still untouched: {len(parts['final'])}", flush=True)
     dist.barrier()
