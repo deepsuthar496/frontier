@@ -23,7 +23,7 @@ Findings:
 - GPU batching is our structural moat (encoder single-pass ~1100 dec/s at B64
   vs ~87 for 12B autoregressive, per Winnow's own tables). Never trade it away
   for autoregressive reasoning tricks.
-- v10 public eval (AG/Emotion) still pending; latency of v10 == v8 class.
+- v10 public eval: 0.8615/89.69 (public-trained, disclosed); latency of v10 == v8 class.
 
 ### Performance work items
 
