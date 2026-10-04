@@ -21,7 +21,9 @@ class FrontierAgent:
         from transformers import AutoConfig, AutoModel
         ecfg = AutoConfig.from_pretrained(f"{model_dir}/encoder")
         enc = AutoModel.from_config(ecfg, attn_implementation="sdpa")
-        self.model = FrontierDecisionEngine(enc, head_layers=self.cfg.get("head_layers", 2))
+        self.model = FrontierDecisionEngine(enc, head_layers=self.cfg.get("head_layers", 2),
+                                              listwise_layers=self.cfg.get("listwise_layers", 0),
+                                              rec_steps=self.cfg.get("rec_steps", 0))
         self.model.load_state_dict(load_file(f"{model_dir}/model.safetensors"), strict=True)
         self.model.to(self.device).eval()
         self.temperature = self.cfg.get("temperature", [1.0, 1.0, 1.0])
