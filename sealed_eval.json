@@ -48,5 +48,9 @@
    "probability": 0.467,
    "routing": 1.0
   }
+ },
+ "v12": {
+  "acc": 0.95,
+  "proper100": 94.6
  }
 }
